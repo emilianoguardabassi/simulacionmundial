@@ -12,26 +12,86 @@ class Football:
     def __str__(self):
         return f"{self.name}: AT {self.attack}, DF {self.deffend}, PAS {self.passing}, TL {self.freekick}, SG {self.playmake}"
 
-def offensive(namelocal,namevisitante,atlocal,dflocal,atvisitante,dfvisitante):
-    dadoatloc=random.randint(atlocal,100)
-    dadodefvis=random.randint(dfvisitante,100)
-    dadodefloc=random.randint(dflocal,100)
-    dadoatvis=random.randint(atvisitante,100)
+    def offensive(self):
+        dadoattack=random.randint(self.attack,100)
+        return dadoattack
+
+    def deffensive(self):
+        dadodef=random.randint(self.deffend,100)
+        return dadodef
+
+    def playmakechance(self):
+        chance=random.randint(self.playmake,100)
+        if chance >= 70:
+            plays=(chance-70)//3
+        return plays
+
+    def fkgoalchance(self):
+        chance=random.randint(self.freekick,100)
+        if chance>99:
+            goal=1
+        else:
+            goal=0
+        return goal
+
+
+
+
+
+
+
+def attackdeffence(player1,player2):
+    localat=player1.offensive()
+    visat=player2.offensive()
+    localdef=player1.deffensive()
+    visdef=player2.deffensive()
+
     gollocal=0
     golvisitante=0
     
-    if (dadoatloc-dadodefvis) > 4:
-        gollocal=(dadoatloc-dadodefvis)//5
-    if (dadoatvis-dadodefloc)>4:
-         golvisitante=(dadoatvis-dadodefloc)//5
+    if (localat-visdef) > 4:
+        gollocal=(localat-visdef)//5
+    if (visat-localdef)>4:
+         golvisitante=(visat-localdef)//5
 
-    print(f"{namelocal}: AT {dadoatloc} DF {dadodefloc}")
-    print(f"{namevisitante}: AT {dadoatvis} DF {dadodefvis}")
-    print(f"Local {dadoatloc-dadodefvis}")
-    print(f"Visitante {dadoatvis-dadodefloc}")
-    print(f"Resultado: {namelocal}: {gollocal} / {golvisitante} :{namevisitante}")
+    print(f"{player1.name}: AT {localat} DF {localdef}")
+    print(f"{player2.name}: AT {visat} DF {visdef}")
+    print(f"Local {localat-visdef}")
+    print(f"Visitante {visat-localdef}")
+    print(f"Resultado: {player1.name}: {gollocal} / {golvisitante} :{player2.name}")
+    return [gollocal,golvisitante]
 
 
+def golespelotaparada(player1,player2):
+    localchances=player1.playmakechance()
+    vischances=player2.playmakechance()
+    goleslocales=0
+    golesvisitante=0
+    print()
+    print(localchances,vischances)
+    
+    while localchances>=1:
+        goleslocales+=player1.fkgoalchance()
+
+        localchances-=1
+
+    while vischances>=1:
+        golesvisitante+=player2.fkgoalchance()
+
+        vischances-=1
+
+    print(f"{player1.name}={goleslocales}  {golesvisitante}={player2.name}")
+    print()
+    return [goleslocales,golesvisitante]
+
+def resultadopartido(player1,player2):
+    listadegolesattdff=attackdeffence(player1,player2)
+    listadegolesfk=golespelotaparada(player1,player2)
+    goleslocales=listadegolesattdff[0]+listadegolesfk[0]
+    golesvisitante=listadegolesattdff[1]+listadegolesfk[1]
+
+    print(f"Resultado definitivo: {player1.name}:{goleslocales}  {golesvisitante}:{player2.name}")
+    return goleslocales,golesvisitante
 
 
 
@@ -55,7 +115,7 @@ iran=Football("Irán",81,72,73,77,75)
 japon=Football("Japón",75,76,77,76,76)
 corea=Football("Corea del Sur",79,75,74,77,76)
 mejico=Football("Méjico",79,76,77,78,77)
-maruecos=Football("Marruecos",78,77,73,76,76)
+marruecos=Football("Marruecos",78,77,73,76,76)
 paisesbajos=Football("Paises Bajos",83,82,81,82,82)
 polonia=Football("Polonia",80,74,76,78,77)
 portugal=Football("Portugal",85,84,82,83,84)
@@ -72,7 +132,7 @@ gales=Football("Gales",76,73,74,75,74)
 
 
 
-offensive(argentina.name,inglaterra.name,argentina.attack,argentina.deffend,inglaterra.attack,inglaterra.deffend)
+
 
 #Grupos
 #qatar-ecuador-senegal-paisesbajos      A
