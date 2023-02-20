@@ -8,9 +8,14 @@ class Football:
         self.passing=passing
         self.freekick=freekick
         self.playmake=playmake
+        self.grouppoints=0
+        self.gf=0
+        self.gc=0
+        
 
     def __str__(self):
         return f"{self.name}: AT {self.attack}, DF {self.deffend}, PAS {self.passing}, TL {self.freekick}, SG {self.playmake}"
+
 
     def offensive(self):
         dadoattack=random.randint(self.attack,100)
@@ -33,8 +38,31 @@ class Football:
         else:
             goal=0
         return goal
+    
+    def penaleschance(self):
+        chance=random.randint(self.passing,100)
+        if chance>90:
+            goal=1
+        else:
+            goal=0
+        return goal
 
 
+
+
+
+
+def penales(player1,player2):
+    goaloc=0
+    goalvis=0
+    while abs(goaloc-goalvis)<2:
+        goaloc+=player1.penaleschance()
+        goalvis+=player2.penaleschance()
+    print(f"Penales:   {player1.name}:{goaloc}     {goalvis}:{player2.name}")
+    if goaloc>goalvis:
+        return player1
+    else:
+        return player2
 
 
 
@@ -54,11 +82,7 @@ def attackdeffence(player1,player2):
     if (visat-localdef)>4:
          golvisitante=(visat-localdef)//5
 
-    print(f"{player1.name}: AT {localat} DF {localdef}")
-    print(f"{player2.name}: AT {visat} DF {visdef}")
-    print(f"Local {localat-visdef}")
-    print(f"Visitante {visat-localdef}")
-    print(f"Resultado: {player1.name}: {gollocal} / {golvisitante} :{player2.name}")
+
     return [gollocal,golvisitante]
 
 
@@ -67,8 +91,6 @@ def golespelotaparada(player1,player2):
     vischances=player2.playmakechance()
     goleslocales=0
     golesvisitante=0
-    print()
-    print(localchances,vischances)
     
     while localchances>=1:
         goleslocales+=player1.fkgoalchance()
@@ -80,8 +102,6 @@ def golespelotaparada(player1,player2):
 
         vischances-=1
 
-    print(f"{player1.name}={goleslocales}  {golesvisitante}={player2.name}")
-    print()
     return [goleslocales,golesvisitante]
 
 def resultadopartido(player1,player2):
@@ -89,9 +109,15 @@ def resultadopartido(player1,player2):
     listadegolesfk=golespelotaparada(player1,player2)
     goleslocales=listadegolesattdff[0]+listadegolesfk[0]
     golesvisitante=listadegolesattdff[1]+listadegolesfk[1]
+    player1.gf+=goleslocales
+    player2.gf+=golesvisitante
+    player1.gc+=golesvisitante
+    player2.gc+=goleslocales
 
+    print("*"*50)
     print(f"Resultado definitivo: {player1.name}:{goleslocales}  {golesvisitante}:{player2.name}")
-    return goleslocales,golesvisitante
+    
+    return [goleslocales,golesvisitante]
 
 
 
