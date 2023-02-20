@@ -1,4 +1,4 @@
-from simulacionmundialfifa import *
+from datafifa import *
 
 
 grupo_a=[ecuador,paisesbajos,senegal,qatar]
