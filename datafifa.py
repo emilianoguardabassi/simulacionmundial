@@ -114,7 +114,7 @@ def resultadopartido(player1,player2):
     player1.gc+=golesvisitante
     player2.gc+=goleslocales
 
-    print("*"*50)
+    print("---"*50)
     print(f"Resultado definitivo: {player1.name}:{goleslocales}  {golesvisitante}:{player2.name}")
     
     return [goleslocales,golesvisitante]
