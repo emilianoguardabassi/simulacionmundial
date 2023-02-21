@@ -40,7 +40,7 @@ class Football:
         return goal
     
     def penaleschance(self):
-        chance=random.randint(self.passing,100)
+        chance=random.randint(self.passing,120)
         if chance>90:
             goal=1
         else:
@@ -52,17 +52,66 @@ class Football:
 
 
 
-def penales(player1,player2):
+def penalesdefinitivos(player1,player2):
     goaloc=0
     goalvis=0
-    while abs(goaloc-goalvis)<2:
-        goaloc+=player1.penaleschance()
-        goalvis+=player2.penaleschance()
-    print(f"Penales:   {player1.name}:{goaloc}     {goalvis}:{player2.name}")
-    if goaloc>goalvis:
-        return player1
-    else:
-        return player2
+    keepgoing=True
+    i=0
+    while keepgoing:
+        if i<=5:
+            goaloc+=player1.penaleschance()
+            goalvis+=player2.penaleschance()
+            i+=1
+            if goalvis>=3 or goaloc>=3:
+                if abs(goaloc-goalvis)==3:
+                    if goaloc>goalvis:
+                        print(f"Penales:   {player1.name}:{goaloc}     {goalvis}:{player2.name}")
+                        print(f"Cantidad de penales: {i*2}")
+                        return player1
+                    else:
+                        print(f"Penales:   {player1.name}:{goaloc}     {goalvis}:{player2.name}")
+                        print(f"Cantidad de penales: {i*2}")
+                        return player2
+                elif abs(goaloc-goalvis)>=2:
+                    if goaloc>goalvis:
+                        print(f"Penales:   {player1.name}:{goaloc}     {goalvis}:{player2.name}")
+                        print(f"Cantidad de penales: {i*2}")
+                        return player1
+                    else:
+                        print(f"Penales:   {player1.name}:{goaloc}     {goalvis}:{player2.name}")
+                        print(f"Cantidad de penales: {i*2}")
+                        return player2
+        elif i<=10:
+            goaloc+=player1.penaleschance()
+            goalvis+=player2.penaleschance()
+            i+=1
+            if abs(goaloc-goalvis)>=2:
+                if goaloc>goalvis:
+                    print(f"Penales:   {player1.name}:{goaloc}     {goalvis}:{player2.name}")
+                    print(f"Cantidad de penales: {i*2}")
+                    return player1
+                else:
+                    print(f"Penales:   {player1.name}:{goaloc}     {goalvis}:{player2.name}")
+                    print(f"Cantidad de penales: {i*2}")
+                    return player2
+        elif i>10:
+            goaloc+=player1.penaleschance()
+            goalvis+=player2.penaleschance()
+            i+=1
+            if abs(goaloc-goalvis)>=1:
+                if goaloc>goalvis:
+                    print(f"Penales:   {player1.name}:{goaloc}     {goalvis}:{player2.name}")
+                    print(f"Cantidad de penales: {i*2}")
+                    return player1
+                else:
+                    print(f"Penales:   {player1.name}:{goaloc}     {goalvis}:{player2.name}")
+                    print(f"Cantidad de penales: {i*2}")
+                    return player2
+        else:
+            print(f"Penales:   {player1.name}:{goaloc}     {goalvis}:{player2.name} BREAK")
+            print(f"Cantidad de penales: {i*2}")
+            break
+
 
 
 
