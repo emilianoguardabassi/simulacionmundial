@@ -1,4 +1,8 @@
 from datafifa import *
+import xlsxwriter
+
+workbook=xlsxwriter.Workbook("resumenmundial.xlsx")
+worksheet=workbook.add_worksheet("PrimerHoja")
 
 
 grupo_a=[ecuador,paisesbajos,senegal,qatar]
@@ -10,7 +14,35 @@ grupo_f=[belgica,canada,croacia,marruecos]
 grupo_g=[brazil,camerun,serbia,suiza]
 grupo_h=[corea,ghana,portugal,uruguay]
 
-def checkresultado(local,vis,game):
+def excelgrupos(fila,columna,grupo): #Genera grupo en xlsx
+
+    worksheet.write(fila,columna,f"{grupo[0].name}")
+    worksheet.write(fila,columna+1,f"{grupo[0].grouppoints}")
+    worksheet.write(fila,columna+2,f"{grupo[0].gf}")
+    worksheet.write(fila,columna+3,f"{grupo[0].gc}")
+    worksheet.write(fila,columna+4,f"{grupo[0].gf-grupo[0].gc}")
+
+    worksheet.write(fila+1,columna,f"{grupo[1].name}")
+    worksheet.write(fila+1,columna+1,f"{grupo[1].grouppoints}")
+    worksheet.write(fila+1,columna+2,f"{grupo[1].gf}")
+    worksheet.write(fila+1,columna+3,f"{grupo[1].gc}")
+    worksheet.write(fila+1,columna+4,f"{grupo[1].gf-grupo[1].gc}")
+
+    worksheet.write(fila+2,columna,f"{grupo[2].name}")
+    worksheet.write(fila+2,columna+1,f"{grupo[2].grouppoints}")
+    worksheet.write(fila+2,columna+2,f"{grupo[2].gf}")
+    worksheet.write(fila+2,columna+3,f"{grupo[2].gc}")
+    worksheet.write(fila+2,columna+4,f"{grupo[2].gf-grupo[2].gc}")
+
+    worksheet.write(fila+3,columna,f"{grupo[3].name}")
+    worksheet.write(fila+3,columna+1,f"{grupo[3].grouppoints}")
+    worksheet.write(fila+3,columna+2,f"{grupo[3].gf}")
+    worksheet.write(fila+3,columna+3,f"{grupo[3].gc}")
+    worksheet.write(fila+3,columna+4,f"{grupo[3].gf-grupo[3].gc}")
+
+
+
+def checkresultado(local,vis,game): #Asigna puntos según el resultado del partido de grupos
     if game[0]>game[1]:
         local.grouppoints+=3
     elif game[0]==game[1]:
@@ -20,9 +52,8 @@ def checkresultado(local,vis,game):
         vis.grouppoints+=3
     return local.grouppoints,local.grouppoints
 
-#define los puntos del grupo
-#falta resolver los empates en puntos
-def definirpuntosgrupo(grupo):
+
+def definirpuntosgrupo(grupo): #Define los puntos de grupo
     jugador1=grupo[0]
     jugador2=grupo[1]
     jugador3=grupo[2]
@@ -107,7 +138,7 @@ def desempatargrupo(listadeganadores):
 
     return ganadores
 
-def ganadordelpartido(player1,player2):
+def ganadordelpartido(player1,player2): #Resultados de partidos eliminatorios
     goles=resultadopartido(player1,player2)
     if goles[0]>goles[1]:
         return player1
@@ -120,11 +151,7 @@ def ganadordelpartido(player1,player2):
         return ganador
         
         
-    
-
-
-
-
+#definición de grupos
 print()
 grupo_a_partidos=definirpuntosgrupo(grupo_a)
 grupo_a_definido=desempatargrupo(grupo_a_partidos)
@@ -150,28 +177,72 @@ grupo_g_definido=desempatargrupo(grupo_g_partidos)
 grupo_h_partidos=definirpuntosgrupo(grupo_h)
 grupo_h_definido=desempatargrupo(grupo_h_partidos)
 
-#Como se enfrentan en las brakets según su posición en los grupos
-#1avs2b --|(octavos)
-#1cvs2d --|
-#         |  
-#         --- vs ---  | (cuartos)
-#         --- vs ---  |
-#         |           |
-#         |           |
-#1evs2f --|           | 
-#1gvs2h --|           --- vs ---|(semifinal)
-#                                --- vs ---  (final)
-#                     --- vs ---|(semifinal)
-#1bvs2a --|           |
-#1dvs2c --|           |          --- vs --- (tercerlugar)
-#         |           |
-#         |           |
-#         --- vs ---  | (cuartos)
-#         --- vs ---  |
-#         |
-#         | 
-#1fvs2e --|
-#1hvs2g --|(octavos)
+
+#Armado xslx grupos
+worksheet.write(0,0,"GrupoA")
+worksheet.write(1,0,"País")
+worksheet.write(1,1,"Puntos")
+worksheet.write(1,2,"GF")
+worksheet.write(1,3,"GC")
+worksheet.write(1,4,"DG")
+excelgrupos(2,0,grupo_a_definido)
+
+worksheet.write(7,0,"GrupoB")
+worksheet.write(8,0,"País")
+worksheet.write(8,1,"Puntos")
+worksheet.write(8,2,"GF")
+worksheet.write(8,3,"GC")
+worksheet.write(8,4,"DG")
+excelgrupos(9,0,grupo_b_definido)
+
+worksheet.write(14,0,"GrupoC")
+worksheet.write(15,0,"País")
+worksheet.write(15,1,"Puntos")
+worksheet.write(15,2,"GF")
+worksheet.write(15,3,"GC")
+worksheet.write(15,4,"DG")
+excelgrupos(16,0,grupo_c_definido)
+
+worksheet.write(21,0,"GrupoD")
+worksheet.write(22,0,"País")
+worksheet.write(22,1,"Puntos")
+worksheet.write(22,2,"GF")
+worksheet.write(22,3,"GC")
+worksheet.write(22,4,"DG")
+excelgrupos(23,0,grupo_d_definido)
+
+worksheet.write(28,0,"GrupoE")
+worksheet.write(29,0,"País")
+worksheet.write(29,1,"Puntos")
+worksheet.write(29,2,"GF")
+worksheet.write(29,3,"GC")
+worksheet.write(29,4,"DG")
+excelgrupos(30,0,grupo_e_definido)
+
+worksheet.write(35,0,"GrupoF")
+worksheet.write(36,0,"País")
+worksheet.write(36,1,"Puntos")
+worksheet.write(36,2,"GF")
+worksheet.write(36,3,"GC")
+worksheet.write(36,4,"DG")
+excelgrupos(37,0,grupo_f_definido)
+
+worksheet.write(42,0,"GrupoG")
+worksheet.write(43,0,"País")
+worksheet.write(43,1,"Puntos")
+worksheet.write(43,2,"GF")
+worksheet.write(43,3,"GC")
+worksheet.write(43,4,"DG")
+excelgrupos(44,0,grupo_g_definido)
+
+worksheet.write(49,0,"GrupoH")
+worksheet.write(50,0,"País")
+worksheet.write(50,1,"Puntos")
+worksheet.write(50,2,"GF")
+worksheet.write(50,3,"GC")
+worksheet.write(50,4,"DG")
+excelgrupos(51,0,grupo_h_definido)
+
 
 primeroctavo=[grupo_a_definido[0],grupo_b_definido[1]]
 segundooctavo=[grupo_c_definido[0],grupo_d_definido[1]]
@@ -238,3 +309,31 @@ print("^"*60)
 print()
 print(f"El ganador de esta edición del mundial es: {g_final}")
 print(f"{g_final.name} logró asegurar {g_final.gf} goles y recibió {g_final.gc} goles")
+
+#Armado xslx brakets
+worksheet.write(8,7,f"{primeroctavo[0].name}VS{primeroctavo[1].name}")
+worksheet.write(10,7,f"{segundooctavo[0].name}VS{segundooctavo[1].name}")
+worksheet.write(14,7,f"{terceroctavo[0].name}VS{terceroctavo[1].name}")
+worksheet.write(16,7,f"{cuartooctavo[0].name}VS{cuartooctavo[1].name}")
+worksheet.write(21,7,f"{quitooctavo[0].name}VS{quitooctavo[1].name}")
+worksheet.write(23,7,f"{sextooctavo[0].name}VS{sextooctavo[1].name}")
+worksheet.write(27,7,f"{septimooctavo[0].name}VS{septimooctavo[1].name}")
+worksheet.write(29,7,f"{octavooctavo[0].name}VS{octavooctavo[1].name}")
+
+worksheet.write(9,9,f"{primercuarto[0].name}VS{primercuarto[1].name}")
+worksheet.write(15,9,f"{segundocuarto[0].name}VS{segundocuarto[1].name}")
+worksheet.write(22,9,f"{tercercuarto[0].name}VS{tercercuarto[1].name}")
+worksheet.write(28,9,f"{cuartocuarto[0].name}VS{cuartocuarto[1].name}")
+
+worksheet.write(12,11,f"{primerasemifinal[0].name}VS{primerasemifinal[1].name}")
+worksheet.write(25,11,f"{segundasemifinal[0].name}VS{segundasemifinal[1].name}")
+
+worksheet.write(19,13,f"{final[0].name}VS{final[1].name}")
+
+worksheet.write(19,15,f"Ganador:{g_final.name}!!")
+
+workbook.close()
+
+
+
+
