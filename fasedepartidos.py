@@ -116,7 +116,7 @@ def ganadordelpartido(player1,player2):
         return player2
         
     elif goles[0]==goles[1]:
-        ganador=penales(player1,player2)
+        ganador=penalesdefinitivos(player1,player2)
         return ganador
         
         
