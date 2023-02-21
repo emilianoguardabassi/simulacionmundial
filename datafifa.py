@@ -1,16 +1,16 @@
 import random
 
 class Football:
-    def __init__(self,name,attack,deffend,passing,freekick,playmake):
+    def __init__(self,name,attack,deffend,passing,freekick,playmake,grouppoints=0,gf=0,gc=0):
         self.name=name
         self.attack=attack
         self.deffend=deffend
         self.passing=passing
         self.freekick=freekick
         self.playmake=playmake
-        self.grouppoints=0
-        self.gf=0
-        self.gc=0
+        self.grouppoints=grouppoints
+        self.gf=gf
+        self.gc=gc
         
 
     def __str__(self):
@@ -19,12 +19,14 @@ class Football:
 
     def offensive(self):
         dadoattack=random.randint(self.attack,100)
-        passingmultiplicador=1+((random.randint(self.passing,100)-85)/100)
+        passingmultiplicador=1+(((self.passing-75)+(random.randint(-5,5)))/100)
         offensiva=dadoattack*passingmultiplicador
         return offensiva
 
     def deffensive(self):
         dadodef=random.randint(self.deffend,100)
+        playmakemultiplicador=1+(((self.playmake-75)+(random.randint(-5,5)))/100)
+        defensa=dadodef*playmakemultiplicador
         return dadodef
 
     def playmakechance(self):
@@ -42,7 +44,8 @@ class Football:
         return goal
     
     def penaleschance(self):
-        chance=random.randint(self.passing,120)
+        multilicadorfk=1+(((self.freekick-80)+(random.randint(-5,5)))/100)
+        chance=(random.randint(self.passing,120))*multilicadorfk
         if chance>90:
             goal=1
         else:
@@ -166,7 +169,7 @@ def resultadopartido(player1,player2):
     player1.gc+=golesvisitante
     player2.gc+=goleslocales
 
-    print("---"*50)
+    print("---"*40)
     print(f"Resultado definitivo: {player1.name}:{goleslocales}  {golesvisitante}:{player2.name}")
     
     return [goleslocales,golesvisitante]
@@ -174,7 +177,8 @@ def resultadopartido(player1,player2):
 
 
 
-
+sample=Football("sample",0,0,0,0,0,0,0,999)
+samplepositiv=Football("sample",0,0,0,0,0,0,999,0)
 argentina=Football("Argentina",86,81,82,84,83)
 australia=Football("Australia",75,70,71,72,72)
 belgica=Football("Bélgica",86,79,80,83,82)
