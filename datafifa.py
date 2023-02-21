@@ -63,7 +63,7 @@ def penalesdefinitivos(player1,player2):
             goalvis+=player2.penaleschance()
             i+=1
             if goalvis>=3 or goaloc>=3:
-                if abs(goaloc-goalvis)==3:
+                if (goaloc==4 or goalvis==4) and abs(goaloc-goalvis)>=3:
                     if goaloc>goalvis:
                         print(f"Penales:   {player1.name}:{goaloc}     {goalvis}:{player2.name}")
                         print(f"Cantidad de penales: {i*2}")
@@ -72,7 +72,7 @@ def penalesdefinitivos(player1,player2):
                         print(f"Penales:   {player1.name}:{goaloc}     {goalvis}:{player2.name}")
                         print(f"Cantidad de penales: {i*2}")
                         return player2
-                elif abs(goaloc-goalvis)>=2:
+                elif (goaloc>4 or goalvis>4) and abs(goaloc-goalvis)>=2:
                     if goaloc>goalvis:
                         print(f"Penales:   {player1.name}:{goaloc}     {goalvis}:{player2.name}")
                         print(f"Cantidad de penales: {i*2}")
@@ -81,6 +81,7 @@ def penalesdefinitivos(player1,player2):
                         print(f"Penales:   {player1.name}:{goaloc}     {goalvis}:{player2.name}")
                         print(f"Cantidad de penales: {i*2}")
                         return player2
+
         elif i<=10:
             goaloc+=player1.penaleschance()
             goalvis+=player2.penaleschance()
