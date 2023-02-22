@@ -19,14 +19,14 @@ class Football:
 
     def offensive(self):
         dadoattack=random.randint(self.attack,100)
-        passingmultiplicador=1+(((self.passing-75)+(random.randint(-5,5)))/100)
+        passingmultiplicador=1+(((self.passing-80)+(random.randint(-5,5)))/100)
         offensiva=dadoattack*passingmultiplicador
         return offensiva
 
     def deffensive(self):
         dadodef=random.randint(self.deffend,100)
-        playmakemultiplicador=1+(((self.playmake-75)+(random.randint(-5,5)))/100)
-        defensa=dadodef*playmakemultiplicador
+        defensamultiplicador=1+(((self.deffend-90)+(random.randint(-5,5)))/100)
+        defensa=dadodef*defensamultiplicador
         return dadodef
 
     def playmakechance(self):
@@ -172,7 +172,7 @@ def resultadopartido(player1,player2):
     print("---"*40)
     print(f"Resultado definitivo: {player1.name}:{goleslocales}  {golesvisitante}:{player2.name}")
     
-    return [goleslocales,golesvisitante]
+    return [[goleslocales,golesvisitante],[player1.name, player2.name]]
 
 
 
