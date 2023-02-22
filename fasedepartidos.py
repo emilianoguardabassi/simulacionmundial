@@ -15,6 +15,25 @@ grupo_f=[belgica,canada,croacia,marruecos]
 grupo_g=[brazil,camerun,serbia,suiza]
 grupo_h=[corea,ghana,portugal,uruguay]
 
+
+def xlsxpartidos(fila,columna,grupo): #Genera grupo en xlsx
+
+    primer=grupo[1][0]
+    segundo=grupo[1][1]
+    tercero=grupo[1][2]
+    cuarto=grupo[1][3]
+    quinto=grupo[1][4]
+    sexto=grupo[1][5]
+
+
+    worksheet2.write(fila,columna,f"{primer[1][0]}: {primer[0][0]}VS{primer[0][1]} :{primer[1][1]}")
+    worksheet2.write(fila+1,columna,f"{segundo[1][0]}: {segundo[0][0]}VS{segundo[0][1]} :{segundo[1][1]}")
+    worksheet2.write(fila+2,columna,f"{tercero[1][0]}: {tercero[0][0]}VS{tercero[0][1]} :{tercero[1][1]}")
+    worksheet2.write(fila+3,columna,f"{cuarto[1][0]}: {cuarto[0][0]}VS{cuarto[0][1]} :{cuarto[1][1]}")
+    worksheet2.write(fila+4,columna,f"{quinto[1][0]}: {quinto[0][0]}VS{quinto[0][1]} :{quinto[1][1]}")
+    worksheet2.write(fila+5,columna,f"{sexto[1][0]}: {sexto[0][0]}VS{sexto[0][1]} :{sexto[1][1]}")
+
+
 def excelgrupos(fila,columna,grupo): #Genera grupo en xlsx
 
     worksheet1.write(fila,columna,f"{grupo[0].name}")
@@ -66,12 +85,12 @@ def definirpuntosgrupo(grupo): #Define los puntos de grupo
     j2vsj4=resultadopartido(jugador2,jugador4)
     j3vsj4=resultadopartido(jugador3,jugador4)
     
-    checkresultado(jugador1,jugador2,j1vsj2)
-    checkresultado(jugador1,jugador3,j1vsj3)
-    checkresultado(jugador1,jugador4,j1vsj4)
-    checkresultado(jugador2,jugador3,j2vsj3)
-    checkresultado(jugador2,jugador4,j2vsj4)
-    checkresultado(jugador3,jugador4,j3vsj4)
+    checkresultado(jugador1,jugador2,j1vsj2[0])
+    checkresultado(jugador1,jugador3,j1vsj3[0])
+    checkresultado(jugador1,jugador4,j1vsj4[0])
+    checkresultado(jugador2,jugador3,j2vsj3[0])
+    checkresultado(jugador2,jugador4,j2vsj4[0])
+    checkresultado(jugador3,jugador4,j3vsj4[0])
 
     grupo.sort(key=lambda x: x.grouppoints,reverse=True)
     primerlugar=grupo[0]
@@ -79,7 +98,7 @@ def definirpuntosgrupo(grupo): #Define los puntos de grupo
     tercerlugar=grupo[2]
     cuartolugar=grupo[3]
     
-    return [primerlugar,segundolugar,tercerlugar,cuartolugar]
+    return [[primerlugar,segundolugar,tercerlugar,cuartolugar],[j1vsj2,j1vsj3,j1vsj4,j2vsj3,j2vsj4,j3vsj4]]
 
 def desempatarcuadruple(p,s,t,c):
     desempate=desempatargrupoDG([p,s,t,c])
@@ -94,7 +113,7 @@ def desempatardoble(p,s):
     desempate=desempatargrupoDG([p,s,sample,sample])
     return desempate
 
-def desempatartripleinferior(samplepositiv,s,t,c):
+def desempatartripleinferior(s,t,c):
     desempate=desempatargrupoDG([samplepositiv,s,t,c])
     return desempate
 
@@ -141,6 +160,9 @@ def desempatargrupo(g):
     elif g[0].grouppoints==g[1].grouppoints:
         ganadores=desempatardoble(g[0],g[1])
         ganadores=[ganadores[0],ganadores[1],g[2],g[3]]
+        if  g[2].grouppoints==g[3].grouppoints:
+            ganadores=desempatardobleinferior(g[2],g[3])
+            ganadores=[g[0],g[1],ganadores[2],ganadores[3]]
     elif g[1].grouppoints==g[2].grouppoints==g[3].grouppoints:
         ganadores=desempatartripleinferior(g[1],g[2],g[3])
         ganadores=[g[0],ganadores[1],ganadores[2],ganadores[3]]
@@ -167,13 +189,13 @@ def desempatargrupo(g):
 
 def ganadordelpartido(player1,player2): #Resultados de partidos eliminatorios
     goles=resultadopartido(player1,player2)
-    if goles[0]>goles[1]:
+    if goles[0][0]>goles[0][1]:
         return [player1,goles[0],goles[1],"",""]
 
-    elif goles[0]<goles[1]:
+    elif goles[0][0]<goles[0][1]:
         return [player2,goles[0],goles[1],"",""]
         
-    elif goles[0]==goles[1]:
+    elif goles[0][0]==goles[0][1]:
         ganador=penalesdefinitivos(player1,player2)
         return [ganador[0],goles[0],goles[1],ganador[1],ganador[2]]
         
@@ -181,31 +203,50 @@ def ganadordelpartido(player1,player2): #Resultados de partidos eliminatorios
 #definición de grupos
 print()
 grupo_a_partidos=definirpuntosgrupo(grupo_a)
-grupo_a_definido=desempatargrupo(grupo_a_partidos)
+grupo_a_definido=desempatargrupo(grupo_a_partidos[0])
 
 grupo_b_partidos=definirpuntosgrupo(grupo_b)
-grupo_b_definido=desempatargrupo(grupo_b_partidos)
+grupo_b_definido=desempatargrupo(grupo_b_partidos[0])
 
 grupo_c_partidos=definirpuntosgrupo(grupo_c)
-grupo_c_definido=desempatargrupo(grupo_c_partidos)
+grupo_c_definido=desempatargrupo(grupo_c_partidos[0])
 
 grupo_d_partidos=definirpuntosgrupo(grupo_d)
-grupo_d_definido=desempatargrupo(grupo_d_partidos)
+grupo_d_definido=desempatargrupo(grupo_d_partidos[0])
 
 grupo_e_partidos=definirpuntosgrupo(grupo_e)
-grupo_e_definido=desempatargrupo(grupo_e_partidos)
+grupo_e_definido=desempatargrupo(grupo_e_partidos[0])
 
 grupo_f_partidos=definirpuntosgrupo(grupo_f)
-grupo_f_definido=desempatargrupo(grupo_f_partidos)
+grupo_f_definido=desempatargrupo(grupo_f_partidos[0])
 
 grupo_g_partidos=definirpuntosgrupo(grupo_g)
-grupo_g_definido=desempatargrupo(grupo_g_partidos)
+grupo_g_definido=desempatargrupo(grupo_g_partidos[0])
 
 grupo_h_partidos=definirpuntosgrupo(grupo_h)
-grupo_h_definido=desempatargrupo(grupo_h_partidos)
+grupo_h_definido=desempatargrupo(grupo_h_partidos[0])
 
 
-#Armado xslx grupos
+#resultado partidos de grupos xlsx
+worksheet2.write(0,0,"GrupoA")
+xlsxpartidos(1,0,grupo_a_partidos)
+worksheet2.write(9,0,"GrupoB")
+xlsxpartidos(10,0,grupo_b_partidos)
+worksheet2.write(18,0,"GrupoC")
+xlsxpartidos(19,0,grupo_c_partidos)
+worksheet2.write(27,0,"GrupoD")
+xlsxpartidos(28,0,grupo_d_partidos)
+worksheet2.write(36,0,"GrupoE")
+xlsxpartidos(37,0,grupo_e_partidos)
+worksheet2.write(45,0,"GrupoF")
+xlsxpartidos(46,0,grupo_f_partidos)
+worksheet2.write(54,0,"GrupoG")
+xlsxpartidos(55,0,grupo_g_partidos)
+worksheet2.write(63,0,"GrupoH")
+xlsxpartidos(64,0,grupo_h_partidos)
+
+
+#Armado xlsx grupos
 worksheet1.write(0,0,"GrupoA")
 worksheet1.write(1,0,"País")
 worksheet1.write(1,1,"Puntos")
@@ -338,24 +379,24 @@ print(f"El ganador de esta edición del mundial es: {g_final[0]}")
 print(f"{g_final[0].name} logró asegurar {g_final[0].gf} goles y recibió {g_final[0].gc} goles")
 
 #Armado xslx brakets
-worksheet1.write(8,7,f"{primeroctavo[0].name}:{gprimer_octavo[1]} VS {gprimer_octavo[2]}:{primeroctavo[1].name} ({gprimer_octavo[3]} : {gprimer_octavo[4]})")
-worksheet1.write(10,7,f"{segundooctavo[0].name}:{gsegundo_octavo[1]} VS {gsegundo_octavo[2]}:{segundooctavo[1].name} ({gsegundo_octavo[3]} : {gsegundo_octavo[4]})")
-worksheet1.write(14,7,f"{terceroctavo[0].name}:{gtercero_octavo[1]} VS {gtercero_octavo[2]}:{terceroctavo[1].name} ({gtercero_octavo[3]} : {gtercero_octavo[4]})")
-worksheet1.write(16,7,f"{cuartooctavo[0].name}:{gcuarto_octavo[1]} VS {gcuarto_octavo[2]}:{cuartooctavo[1].name} ({gcuarto_octavo[3]} : {gcuarto_octavo[4]})")
-worksheet1.write(21,7,f"{quitooctavo[0].name}:{gquinto_octavo[1]} VS {gquinto_octavo[2]}:{quitooctavo[1].name} ({gquinto_octavo[3]} : {gquinto_octavo[4]})")
-worksheet1.write(23,7,f"{sextooctavo[0].name}:{gsexto_octavo[1]} VS {gsexto_octavo[2]}:{sextooctavo[1].name} ({gsexto_octavo[3]} : {gsexto_octavo[4]})")
-worksheet1.write(27,7,f"{septimooctavo[0].name}:{gseptimo_octavo[1]} VS {gseptimo_octavo[2]}:{septimooctavo[1].name} ({gseptimo_octavo[3]} : {gseptimo_octavo[4]})")
-worksheet1.write(29,7,f"{octavooctavo[0].name}:{goctavo_octavo[1]} VS {goctavo_octavo[2]}:{octavooctavo[1].name} ({goctavo_octavo[3]} : {goctavo_octavo[4]})")
+worksheet1.write(8,7,f"{primeroctavo[0].name}:{gprimer_octavo[1][0]} VS {gprimer_octavo[1][1]}:{primeroctavo[1].name} ({gprimer_octavo[3]} : {gprimer_octavo[4]})")
+worksheet1.write(10,7,f"{segundooctavo[0].name}:{gsegundo_octavo[1][0]} VS {gsegundo_octavo[1][1]}:{segundooctavo[1].name} ({gsegundo_octavo[3]} : {gsegundo_octavo[4]})")
+worksheet1.write(14,7,f"{terceroctavo[0].name}:{gtercero_octavo[1][0]} VS {gtercero_octavo[1][1]}:{terceroctavo[1].name} ({gtercero_octavo[3]} : {gtercero_octavo[4]})")
+worksheet1.write(16,7,f"{cuartooctavo[0].name}:{gcuarto_octavo[1][0]} VS {gcuarto_octavo[1][1]}:{cuartooctavo[1].name} ({gcuarto_octavo[3]} : {gcuarto_octavo[4]})")
+worksheet1.write(21,7,f"{quitooctavo[0].name}:{gquinto_octavo[1][0]} VS {gquinto_octavo[1][1]}:{quitooctavo[1].name} ({gquinto_octavo[3]} : {gquinto_octavo[4]})")
+worksheet1.write(23,7,f"{sextooctavo[0].name}:{gsexto_octavo[1][0]} VS {gsexto_octavo[1][1]}:{sextooctavo[1].name} ({gsexto_octavo[3]} : {gsexto_octavo[4]})")
+worksheet1.write(27,7,f"{septimooctavo[0].name}:{gseptimo_octavo[1][0]} VS {gseptimo_octavo[1][1]}:{septimooctavo[1].name} ({gseptimo_octavo[3]} : {gseptimo_octavo[4]})")
+worksheet1.write(29,7,f"{octavooctavo[0].name}:{goctavo_octavo[1][0]} VS {goctavo_octavo[1][1]}:{octavooctavo[1].name} ({goctavo_octavo[3]} : {goctavo_octavo[4]})")
 
-worksheet1.write(9,9,f"{primercuarto[0].name}:{gprimer_cuarto[1]} VS {gprimer_cuarto[2]}:{primercuarto[1].name} ({gprimer_cuarto[3]} : {gprimer_cuarto[4]})")
-worksheet1.write(15,9,f"{segundocuarto[0].name}:{gsegundo_cuarto[1]} VS {gsegundo_cuarto[2]}:{segundocuarto[1].name} ({gsegundo_cuarto[3]} : {gsegundo_cuarto[4]})")
-worksheet1.write(22,9,f"{tercercuarto[0].name}:{gtercer_cuarto[1]} VS {gtercer_cuarto[2]}:{tercercuarto[1].name} ({gtercer_cuarto[3]} : {gtercer_cuarto[4]})")
-worksheet1.write(28,9,f"{cuartocuarto[0].name}:{gcuarto_cuarto[1]} VS {gcuarto_cuarto[2]}:{cuartocuarto[1].name} ({gcuarto_cuarto[3]} : {gcuarto_cuarto[4]})")
+worksheet1.write(9,9,f"{primercuarto[0].name}:{gprimer_cuarto[1][0]} VS {gprimer_cuarto[1][1]}:{primercuarto[1].name} ({gprimer_cuarto[3]} : {gprimer_cuarto[4]})")
+worksheet1.write(15,9,f"{segundocuarto[0].name}:{gsegundo_cuarto[1][0]} VS {gsegundo_cuarto[1][1]}:{segundocuarto[1].name} ({gsegundo_cuarto[3]} : {gsegundo_cuarto[4]})")
+worksheet1.write(22,9,f"{tercercuarto[0].name}:{gtercer_cuarto[1][0]} VS {gtercer_cuarto[1][1]}:{tercercuarto[1].name} ({gtercer_cuarto[3]} : {gtercer_cuarto[4]})")
+worksheet1.write(28,9,f"{cuartocuarto[0].name}:{gcuarto_cuarto[1][0]} VS {gcuarto_cuarto[1][1]}:{cuartocuarto[1].name} ({gcuarto_cuarto[3]} : {gcuarto_cuarto[4]})")
 
-worksheet1.write(12,11,f"{primerasemifinal[0].name}:{gprimera_semifinal[1]} VS {gprimera_semifinal[2]}:{primerasemifinal[1].name} ({gprimera_semifinal[3]} : {gprimera_semifinal[4]})")
-worksheet1.write(25,11,f"{segundasemifinal[0].name}:{gsegunda_semifinal[1]} VS {gsegunda_semifinal[2]}:{segundasemifinal[1].name} ({gsegunda_semifinal[3]} : {gsegunda_semifinal[4]})")
+worksheet1.write(12,11,f"{primerasemifinal[0].name}:{gprimera_semifinal[1][0]} VS {gprimera_semifinal[1][1]}:{primerasemifinal[1].name} ({gprimera_semifinal[3]} : {gprimera_semifinal[4]})")
+worksheet1.write(25,11,f"{segundasemifinal[0].name}:{gsegunda_semifinal[1][0]} VS {gsegunda_semifinal[1][1]}:{segundasemifinal[1].name} ({gsegunda_semifinal[3]} : {gsegunda_semifinal[4]})")
 
-worksheet1.write(19,13,f"{final[0].name}:{g_final[1]} VS {g_final[2]}:{final[1].name} ({g_final[3]} : {g_final[4]})")
+worksheet1.write(19,13,f"{final[0].name}:{g_final[1][0]} VS {g_final[1][1]}:{final[1].name} ({g_final[3]} : {g_final[4]})")
 
 worksheet1.write(19,14,f"Ganador:{g_final[0].name}!!")
 
@@ -364,6 +405,7 @@ worksheet1.set_column(9,9,34)
 worksheet1.set_column(11,11,34)
 worksheet1.set_column(13,14,34)
 worksheet1.set_column(0,0,16)
+worksheet2.set_column(0,0,28)
 workbook.close()
 
 
