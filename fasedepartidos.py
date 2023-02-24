@@ -1,9 +1,10 @@
 from datafifa import *
 import xlsxwriter
 
-workbook=xlsxwriter.Workbook("/home/emiliano/Documentos/proyectos/fifaproject/resumenmundial.xlsx")
+workbook=xlsxwriter.Workbook("resumenmundial.xlsx")
 worksheet1=workbook.add_worksheet("PrimerHoja")
 worksheet2=workbook.add_worksheet("SegundaHoja")
+worksheet3=workbook.add_worksheet("TerceraHoja")
 
 
 grupo_a=[ecuador,paisesbajos,senegal,qatar]
@@ -198,8 +199,10 @@ def ganadordelpartido(player1,player2): #Resultados de partidos eliminatorios
     elif goles[0][0]==goles[0][1]:
         ganador=penalesdefinitivos(player1,player2)
         return [ganador[0],goles[0],goles[1],ganador[1],ganador[2]]
-        
-        
+
+#Funciones ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+############################################################################################################################
+  
 #definición de grupos
 print()
 grupo_a_partidos=definirpuntosgrupo(grupo_a)
@@ -227,6 +230,8 @@ grupo_h_partidos=definirpuntosgrupo(grupo_h)
 grupo_h_definido=desempatargrupo(grupo_h_partidos[0])
 
 
+#XLSX vvvvvvvvvvvvvvvvv
+################################################################################
 #resultado partidos de grupos xlsx
 worksheet2.write(0,0,"GrupoA")
 xlsxpartidos(1,0,grupo_a_partidos)
@@ -310,7 +315,13 @@ worksheet1.write(50,2,"GF")
 worksheet1.write(50,3,"GC")
 worksheet1.write(50,4,"DG")
 excelgrupos(51,0,grupo_h_definido)
+################################################################################################
+#XLSX ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+
+
+#Llaves eliminatorias
+################################################################################################################################################
 
 primeroctavo=[grupo_a_definido[0],grupo_b_definido[1]]
 segundooctavo=[grupo_c_definido[0],grupo_d_definido[1]]
@@ -324,7 +335,7 @@ sextooctavo=[grupo_d_definido[0],grupo_c_definido[1]]
 septimooctavo=[grupo_f_definido[0],grupo_e_definido[1]]
 octavooctavo=[grupo_h_definido[0],grupo_g_definido[1]]
 print()
-print("*"*60)
+print()
 print()
 print("Octavos de final -/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-")
 print()
@@ -336,6 +347,7 @@ gquinto_octavo=ganadordelpartido(quitooctavo[0],quitooctavo[1])
 gsexto_octavo=ganadordelpartido(sextooctavo[0],sextooctavo[1])
 gseptimo_octavo=ganadordelpartido(septimooctavo[0],septimooctavo[1])
 goctavo_octavo=ganadordelpartido(octavooctavo[0],octavooctavo[1])
+print("------------------------------------------------------------------------------------------------------------------------")
 print()
 print("Octavos de final -/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-")
 
@@ -345,7 +357,7 @@ print()
 tercercuarto=[gquinto_octavo[0],gsexto_octavo[0]]
 cuartocuarto=[gseptimo_octavo[0],goctavo_octavo[0]]
 print()
-print("*"*60)
+print()
 print()
 print("Cuartos de final -/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-")
 print()
@@ -353,31 +365,37 @@ gprimer_cuarto=ganadordelpartido(primercuarto[0],primercuarto[1])
 gsegundo_cuarto=ganadordelpartido(segundocuarto[0],segundocuarto[1])
 gtercer_cuarto=ganadordelpartido(tercercuarto[0],tercercuarto[1])
 gcuarto_cuarto=ganadordelpartido(cuartocuarto[0],cuartocuarto[1])
+print("------------------------------------------------------------------------------------------------------------------------")
 print()
 print("Cuartos de final -/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-")
 primerasemifinal=[gprimer_cuarto[0],gsegundo_cuarto[0]]
 segundasemifinal=[gtercer_cuarto[0],gcuarto_cuarto[0]]
 print()
-print("*"*60)
+print()
 print()
 print("Semifinal -/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-")
 gprimera_semifinal=ganadordelpartido(primerasemifinal[0],primerasemifinal[1])
 gsegunda_semifinal=ganadordelpartido(segundasemifinal[0],segundasemifinal[1])
+print("------------------------------------------------------------------------------------------------------------------------")
 print("Semifinal -/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-")
 final=[gprimera_semifinal[0],gsegunda_semifinal[0]]
 print()
-print("*"*60)
+print()
 print()
 print("Final -/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-")
 print()
 g_final=ganadordelpartido(final[0],final[1])
+print("------------------------------------------------------------------------------------------------------------------------")
 print()
 print("Final -/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-")
-print("^"*60)
+print()
 print()
 print(f"El ganador de esta edición del mundial es: {g_final[0]}")
 print(f"{g_final[0].name} logró asegurar {g_final[0].gf} goles y recibió {g_final[0].gc} goles")
 
+################################################################################################################################################
+
+#----------------------------------------------------------------  ----------------------------------------------------------------
 #Armado xslx brakets
 worksheet1.write(8,7,f"{primeroctavo[0].name}:{gprimer_octavo[1][0]} VS {gprimer_octavo[1][1]}:{primeroctavo[1].name} ({gprimer_octavo[3]} : {gprimer_octavo[4]})")
 worksheet1.write(10,7,f"{segundooctavo[0].name}:{gsegundo_octavo[1][0]} VS {gsegundo_octavo[1][1]}:{segundooctavo[1].name} ({gsegundo_octavo[3]} : {gsegundo_octavo[4]})")
@@ -400,12 +418,70 @@ worksheet1.write(19,13,f"{final[0].name}:{g_final[1][0]} VS {g_final[1][1]}:{fin
 
 worksheet1.write(19,14,f"Ganador:{g_final[0].name}!!")
 
-worksheet1.set_column(7,7,34)
-worksheet1.set_column(9,9,34)
-worksheet1.set_column(11,11,34)
-worksheet1.set_column(13,14,34)
-worksheet1.set_column(0,0,16)
-worksheet2.set_column(0,0,28)
+#----------------------------------------------------------------  ----------------------------------------------------------------
+
+#Gráfico
+#----------------------------------------------------------------  ----------------------------------------------------------------
+grafico=workbook.add_chart({"type": "column"})
+
+
+
+worksheet3.write("A1", "País")
+worksheet3.write("B1", "GF")
+worksheet3.write("C1", "GC")
+worksheet3.write("D1", "DG")
+#name[0] gf[7] gc[8]
+mundial2023.sort(key=lambda x:x.gf,reverse=True)
+
+for i in range(0,len(mundial2023)):
+    dg=mundial2023[i].gf-mundial2023[i].gc
+    tg=mundial2023[i].gc+mundial2023[i].gf
+    worksheet3.write(i+1,0,mundial2023[i].name)
+    worksheet3.write(i+1,1,mundial2023[i].gf)
+    worksheet3.write(i+1,2,mundial2023[i].gc)
+    worksheet3.write(i+1,3,dg)
+
+
+
+
+
+grafico.add_series({
+    'name':       '=TerceraHoja!$B$1',
+    'values':     '=TerceraHoja!$B$2:$B$33',
+    'categories': '=TerceraHoja!$A$2:$A$33',
+    'fill':       {'color': '#58b018'},
+})
+
+grafico.add_series({
+    'name':       '=TerceraHoja!$C$1',
+    'values':     '=TerceraHoja!$C$2:$C$33',
+    'fill':       {'color': '#ff0000'},
+})
+
+grafico.add_series({
+    'name':       '=TerceraHoja!$D$1',
+    'values':     '=TerceraHoja!$D$2:$D$33',
+    'fill':       {'color': '#6b205b'},
+})
+
+
+
+worksheet3.insert_chart("F2",grafico,{'x_scale': 2.15, 'y_scale': 2})
+#----------------------------------------------------------------  ----------------------------------------------------------------
+
+
+
+
+
+
+#Ancho de las columnas
+worksheet1.set_column(7,7,34)   # Octavos (Primerahoja)
+worksheet1.set_column(9,9,34)   # Cuartos (Primerahoja)
+worksheet1.set_column(11,11,34) # Semifinal (Primerahoja)
+worksheet1.set_column(13,14,34) # Final (Primerahoja)
+worksheet1.set_column(0,0,16)   # Grupos (Primerahoja)
+worksheet2.set_column(0,0,28)   # Partidos de grupos (Segundahoja)
+worksheet3.set_column(0,0,16)   # Paises (Tercerahoja)
 workbook.close()
 
 
